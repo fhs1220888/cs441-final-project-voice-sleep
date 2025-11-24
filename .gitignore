@@ -1,0 +1,15 @@
+# Ignore editor/AI plugin configs
+.claude/
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Ignore raw data
+data/raw/
+
+# VS Code workspace settings
+.vscode/
+
+# Jupyter checkpoint
+.ipynb_checkpoints/
