@@ -1,53 +1,176 @@
-# Voice-Sleep Analysis Project
+# CS441 Final Project — Voice & Sleep Quality Prediction
 
-A machine learning project for analyzing voice recordings and sleep patterns.
+A machine learning project for predicting sleep quality from short morning voice recordings.
+
+This project extracts audio features (MFCC, pitch, energy), trains classical ML models (Linear Regression, Logistic Regression, kNN), and evaluates model performance with RMSE and accuracy metrics.
+
+---
 
 ## Project Structure
 
-```
 voice-sleep/
 │
 ├── data/
-│   ├── raw/          # Original WAV audio files
-│   ├── processed/    # Extracted features (CSV)
+│     ├── raw/          # Raw WAV audio files (NOT included in the repo)
+│     ├── processed/    # Extracted features, evaluation results, plots
 │
 ├── src/
-│   ├── extract_features.py  # Feature extraction from audio
-│   ├── train_models.py      # Model training
-│   ├── evaluate.py          # Model evaluation
+│     ├── extract_features.py        # Convert audio → MFCC/pitch/energy features
+│     ├── train_models.py            # Baseline model training
+│     ├── evaluate.py                # K-fold evaluation (RMSE & accuracy)
+│     ├── evaluate_with_plots.py     # Evaluation + automatic visualization
 │
 ├── notebook/
-│   └── analysis.ipynb       # Exploratory analysis and visualization
+│     └── analysis.ipynb             # Exploratory analysis & feature visualization
 │
 ├── requirements.txt
 └── README.md
+
+---
+
+## Setup & Installation
+
+### **1. Clone the repository**
+
+```
+git clone https://github.com/fhs1220888/cs441-final-project-voice-sleep.git
+
+cd cs441-final-project-voice-sleep
 ```
 
-## Installation
+### **2. Install dependencies**
 
-Install required dependencies:
-
-```bash
+```
 pip install -r requirements.txt
 ```
 
-## Usage
+---
 
-1. Place your raw WAV files in `data/raw/`
-2. Extract features: `python src/extract_features.py`
-3. Train models: `python src/train_models.py`
-4. Evaluate results: `python src/evaluate.py`
+## Data Collection
+
+This project requires **your own recorded audio data** to satisfy CS441's “self-collected dataset” requirement.
+
+- Record a 3–5 second voice clip every morning
+- Say a fixed sentence (e.g., *“Today is November 23rd, I slept okay last night.”*)
+- Label your sleep quality on a **1–5 scale**
+- Save files in:
+
+```
+data/raw/sleep<score>_<date>.wav
+```
+
+Example:
+
+```
+data/raw/sleep4_2025-11-23.wav
+```
+
+---
+
+## Running the Pipeline
+
+### **1. Extract audio features**
+
+Extract MFCC, pitch, energy, etc.:
+
+```
+python src/extract_features.py
+```
+
+This generates:
+
+```
+data/processed/features.csv
+```
+
+---
+
+### **2. Train baseline models**
+
+```
+python src/train_models.py
+```
+
+Models included:
+
+- Linear Regression
+- Logistic Regression
+- k-Nearest Neighbors (kNN)
+
+---
+
+### **3. Evaluate models (K-Fold CV)**
+
+```
+python src/evaluate.py
+```
+
+Outputs:
+
+- RMSE (regression)
+- Accuracy (classification)
+- eval_results.csv
+
+---
+
+### **4. Generate plots**
+
+```
+python src/evaluate_with_plots.py
+```
+
+Produces:
+
+```
+data/processed/rmse_plot.png
+data/processed/accuracy_plot.png
+```
+
+---
+
+## Exploratory Analysis
+
+Use the Jupyter notebook for visualization:
+
+```
+notebook/analysis.ipynb
+```
+
+Includes:
+
+- MFCC inspection
+- Sleep label distribution
+- Spectrogram visualization
+- Feature trends
+
+---
 
 ## Requirements
 
-- numpy
-- scipy
-- librosa
-- pandas
-- scikit-learn
-- matplotlib
-- soundfile
+```
+numpy
+scipy
+librosa
+pandas
+scikit-learn
+matplotlib
+soundfile
+```
+
+---
 
 ## License
 
-TBD
+MIT
+
+---
+
+## Notes
+
+This project fulfills CS441 Final Project requirements:
+
+- Self-collected dataset
+- ML task definition
+- Training + validation + testing
+- Quantitative evaluation
+- Visualization + analysis
