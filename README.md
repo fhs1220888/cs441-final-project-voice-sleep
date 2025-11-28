@@ -8,23 +8,29 @@ This project extracts audio features (MFCC, pitch, energy), trains classical ML 
 
 ## Project Structure
 
+
+## Project Structure
+
+```text
 voice-sleep/
 │
 ├── data/
 │   ├── raw/                        # Raw WAV audio files (NOT included in the repo)
-│   ├── processed/                  # Extracted features, evaluation results, plots
+│   └── processed/                  # Extracted features, evaluation results, plots
 │
 ├── src/
 │   ├── extract_features.py         # Convert audio → MFCC/pitch/energy features
 │   ├── train_models.py             # Baseline model training
 │   ├── evaluate.py                 # K-fold evaluation (RMSE & accuracy)
-│   ├── evaluate_with_plots.py      # Evaluation + automatic visualization
+│   └── evaluate_with_plots.py      # Evaluation + automatic visualization
 │
 ├── notebook/
 │   └── analysis.ipynb              # Exploratory analysis & feature visualization
 │
 ├── requirements.txt
 └── README.md
+```
+
 
 ---
 
