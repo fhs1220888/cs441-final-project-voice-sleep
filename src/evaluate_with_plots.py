@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.lines as mlines
 from sklearn.model_selection import KFold
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression, LogisticRegression
@@ -10,7 +11,7 @@ from sklearn.metrics import mean_squared_error, accuracy_score
 
 
 # Load Data
-df = pd.read_csv("../data/processed/features.csv")
+df = pd.read_csv("data/processed/features.csv")
 
 X = df.drop(columns=["label", "file"])
 y_reg = df["label"]
@@ -105,20 +106,77 @@ print(clf_df)
 
 
 # Plot RMSE
-plt.figure(figsize=(8, 5))
-plt.bar(reg_df["Model"], reg_df["RMSE_Mean"], yerr=reg_df["RMSE_Std"], capsize=5)
-plt.ylabel("RMSE")
-plt.title("Model Comparison (Regression RMSE)")
-plt.savefig("../data/processed/rmse_plot.png")
-plt.close()
+plt.figure(figsize=(8,5))
 
+bars = plt.bar(
+    reg_df["Model"],
+    reg_df["RMSE_Mean"],
+    yerr=reg_df["RMSE_Std"],
+    capsize=8,
+    error_kw=dict(capthick=2, elinewidth=2),
+    color=["#4C72B0", "#55A868"]
+)
+
+# Add values
+for bar in bars:
+    height = bar.get_height()
+    plt.text(bar.get_x() + bar.get_width()/2, height + 0.03,
+             f"{height:.2f}", ha="center", fontsize=10)
+
+plt.ylabel("RMSE")
+plt.title("Regression RMSE (Error Bars = Standard Deviation Across Folds)")
+plt.grid(axis='y', linestyle='--', alpha=0.6)
+
+# --------- ADD THIS: Legend showing error bar shape ---------
+error_line = mlines.Line2D([], [], color='black', linewidth=2, 
+                           marker='_', markersize=12, label='Error Bar (Std)')
+plt.legend(handles=[error_line])
+# ------------------------------------------------------------
+
+plt.savefig("data/processed/rmse_plot_i_errorbars.png", dpi=200)
+plt.close()
 
 # Plot Accuracy
-plt.figure(figsize=(8, 5))
-plt.bar(clf_df["Model"], clf_df["Acc_Mean"], yerr=clf_df["Acc_Std"], capsize=5)
-plt.ylabel("Accuracy")
-plt.title("Model Comparison (Classification Accuracy)")
-plt.savefig("../data/processed/accuracy_plot.png")
-plt.close()
+plt.figure(figsize=(8,5))
 
-print("\nSaved: rmse_plot.png & accuracy_plot.png in data/processed/")
+bars = plt.bar(
+    clf_df["Model"],
+    clf_df["Acc_Mean"],
+    yerr=clf_df["Acc_Std"],
+    capsize=8,
+    error_kw=dict(
+        capthick=2,   # horizontal bar thickness
+        elinewidth=2  # vertical error bar thickness
+    ),
+    color=["#C44E52", "#8172B3"]
+)
+
+# Add value labels on bars
+for bar in bars:
+    height = bar.get_height()
+    plt.text(
+        bar.get_x() + bar.get_width()/2,
+        height + 0.02,
+        f"{height:.2f}",
+        ha="center",
+        fontsize=10
+    )
+
+plt.ylabel("Accuracy")
+plt.title("Classification Accuracy (Error Bars = Std Across 5 Folds)")
+plt.ylim(0, 1.05)
+plt.grid(axis='y', linestyle='--', alpha=0.6)
+
+# ---- ADD THIS: Legend showing what the error bar represents ----
+error_line = mlines.Line2D(
+    [], [], 
+    color='black', 
+    linewidth=2, 
+    marker='_', markersize=12,
+    label='Error Bar (Std Across Folds)'
+)
+plt.legend(handles=[error_line], loc='upper right')
+# ---------------------------------------------------------------
+
+plt.savefig("data/processed/accuracy_plot_i_errorbars.png", dpi=200)
+plt.close()

@@ -56,13 +56,13 @@ This project requires **your own recorded audio data** to satisfy CS441's “sel
 - Save files in:
 
 ```
-data/raw/sleep<score>_<date>.wav
+data/raw/sleep<score>_<num>.wav
 ```
 
 Example:
 
 ```
-data/raw/sleep4_2025-11-23.wav
+data/raw/sleep4_1.wav
 ```
 
 ---

@@ -6,7 +6,7 @@ from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
 from sklearn.metrics import mean_squared_error, accuracy_score
 import numpy as np
 
-df = pd.read_csv("../data/processed/features.csv")
+df = pd.read_csv("data/processed/features.csv")
 
 X = df.drop(columns=["label", "file"])
 y = df["label"]

@@ -3,8 +3,8 @@ import numpy as np
 import pandas as pd
 import os
 
-RAW_DIR = "../data/raw/"
-OUT_FILE = "../data/processed/features.csv"
+RAW_DIR = "data/raw/"
+OUT_FILE = "data/processed/features.csv"
 
 def extract_features_from_file(path):
     y, sr = librosa.load(path, sr=16000)

@@ -7,10 +7,9 @@ from sklearn.neighbors import KNeighborsRegressor, KNeighborsClassifier
 from sklearn.metrics import mean_squared_error, accuracy_score
 
 
-# ---------------------------
+
 # Load Data
-# ---------------------------
-df = pd.read_csv("../data/processed/features.csv")
+df = pd.read_csv("data/processed/features.csv")
 
 X = df.drop(columns=["label", "file"])
 y_reg = df["label"]                       # regression labels
@@ -27,9 +26,9 @@ models_clf = {
 }
 
 
-# ---------------------------
-# Helper: Run K-Fold Evaluation
-# ---------------------------
+
+# Run K-Fold Evaluation
+
 def evaluate_regression(models, X, y, k=5):
     results = []
 
@@ -94,9 +93,8 @@ def evaluate_classification(models, X, y, k=5):
     return results
 
 
-# ---------------------------
+
 # Run Evaluation
-# ---------------------------
 reg_results = evaluate_regression(models_reg, X, y_reg)
 clf_results = evaluate_classification(models_clf, X, y_clf)
 
@@ -105,6 +103,6 @@ all_results = pd.DataFrame(reg_results + clf_results)
 print("\n===== Evaluation Results (5-fold CV) =====\n")
 print(all_results)
 
-# Optionally save results
-all_results.to_csv("../data/processed/eval_results.csv", index=False)
+# Save results
+all_results.to_csv("data/processed/eval_results.csv", index=False)
 print("\nSaved results to eval_results.csv")
