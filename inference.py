@@ -20,7 +20,8 @@ MODELS_DIR = BASE_DIR / "models"
 # -------------------------
 # AUDIO LOADING
 # -------------------------
-def _load_audio(audio_path: str, target_sr: int = 22050) -> Tuple[np.ndarray, int]:
+def _load_audio(audio_path: str, target_sr: int = 16000) -> Tuple[np.ndarray, int]:
+    # Match training sample rate (16 kHz) so features align with saved models
     y, sr = librosa.load(audio_path, sr=target_sr)
     return y, sr
 
@@ -36,12 +37,12 @@ def extract_features(audio_path: str) -> np.ndarray:
     mfcc_means = mfcc.mean(axis=1)
 
     # Pitch
-    pitches, magnitudes = librosa.piptrack(y=y, sr=sr)
-    pitch_vals = pitches[magnitudes > 0]
+    pitches, _ = librosa.piptrack(y=y, sr=sr)
+    pitch_vals = pitches[pitches > 0]
     pitch_mean = float(np.mean(pitch_vals)) if pitch_vals.size > 0 else 0.0
 
-    # Energy
-    energy = float(np.sum(y ** 2) / len(y)) if len(y) > 0 else 0.0
+    # Energy (RMS mean to match training)
+    energy = float(np.mean(librosa.feature.rms(y=y))) if len(y) > 0 else 0.0
 
     # Final feature vector
     features = np.concatenate([mfcc_means, [pitch_mean, energy]])
@@ -124,7 +125,7 @@ def main():
     quality = predict_sleep_quality(audio_path)
 
     print(f"Predicted sleep score (regression): {score:.3f}")
-    print(f"Predicted sleep quality (0=bad, 1=good): {quality}")
+    print(f"Predicted sleep quality (0=poor, 1=good): {quality}")
 
 
 if __name__ == "__main__":
