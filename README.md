@@ -8,16 +8,22 @@ This project extracts audio features (MFCC, pitch, energy), trains classical ML 
 
 ## Project Structure
 
-
 ## Project Structure
 
 ```text
 voice-sleep/
 │
 ├── data/
-│   ├── raw/                        # Raw WAV audio files (NOT included in the repo)
+│   ├── raw/                        # Raw WAV audio files (NOT included in the repo, will share google drive link in report)
 │   └── processed/                  # Extracted features, evaluation results, plots
 │
+├── models/ 			    # Saved scalers & trained ML models
+│   ├── scaler_reg.pkl		    # StandardScaler for regression
+│   ├── scaler_clf.pkl   	    # StandardScaler for classification
+│   ├── regression_model.pkl	    # Trained regression model
+│   ├── classifier_model.pkl	    # Trained classification model
+│   ├── feature_names.json	    # Feature name ordering for inference
+│   
 ├── src/
 │   ├── extract_features.py         # Convert audio → MFCC/pitch/energy features
 │   ├── train_models.py             # Baseline model training
@@ -27,10 +33,10 @@ voice-sleep/
 ├── notebook/
 │   └── analysis.ipynb              # Exploratory analysis & feature visualization
 │
+├── inference.py 		    # Run sleep score predictions on new audio
 ├── requirements.txt
 └── README.md
 ```
-
 
 ---
 
@@ -103,6 +109,20 @@ Models included:
 - Logistic Regression
 - k-Nearest Neighbors (kNN)
 
+Running this script trains all baseline models and saves the following files to the `models/` directory:
+
+models/
+
+├── classifier_model.pkl     # Trained classification model
+
+├── regression_model.pkl     # Trained regression model
+
+├── scaler_clf.pkl           # StandardScaler for classification
+
+├── scaler_reg.pkl           # StandardScaler for regression
+
+└── feature_names.json       # Feature name ordering for inference
+
 ---
 
 ### **3. Evaluate models (K-Fold CV)**
@@ -134,6 +154,18 @@ data/processed/accuracy_plot.png
 
 ---
 
+### **5. Run Inference (Predict Sleep Score from Audio)**
+
+After training the models, you can run sleep score prediction on **any new audio file**.
+
+```
+python inference.py data/raw/<audio>.wav
+```
+
+---
+
+
+
 ## Exploratory Analysis
 
 Use the Jupyter notebook for visualization:
@@ -161,6 +193,7 @@ pandas
 scikit-learn
 matplotlib
 soundfile
+joblib
 ```
 
 ---
